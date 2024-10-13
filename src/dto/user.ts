@@ -1,10 +1,6 @@
-interface newUser {
+export interface User {
+    id: string,
     username: string,
-    password: string,
-    profilePic: string,
-}
-
-interface signInUser {
-    username: string,
-    password: string
+    password?: string,
+    created_at?: Date
 }

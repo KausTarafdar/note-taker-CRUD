@@ -1,7 +1,7 @@
 import { Router } from "express";
-import handleSignUp from "./controllers/signup.controller";
 import handleLogin from "./controllers/login.controller";
 import handleLogout from "./controllers/logout.controller";
+import handleSignUp from "./controllers/signup.controller";
 
 const userRouter = Router();
 
