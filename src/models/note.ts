@@ -26,7 +26,7 @@ export class NoteRepository {
 
     public async getAllNotes(user_id: string, limit: number, skip: number): Promise<NotesArray | null>{
         try {
-            const result= await DB.prepare(`SELECT * FROM note where user_id='${user_id} LIMIT ${skip}, ${limit}`).all();
+            const result= DB.prepare(`SELECT * FROM note where user_id='${user_id}' LIMIT ${skip}, ${limit}`).all();
             if(isNotesArray(result)) {
                 return result
             }
@@ -37,41 +37,69 @@ export class NoteRepository {
     }
 
     private async _UpdateNote(note: Note) {
-        const query = DB.prepare(`UPDATE note
-                                SET data='${note.data},
-                                updated_at=CURRENT_TIMESTAMP
-                                WHERE id=${note.id}'`)
-        const transaction = DB.transaction(() => {
-            const info = query.run()
-            logger.info(info.changes)
-        })
-        transaction()
+        try {
+            const query = DB.prepare(`UPDATE note
+                                    SET data='${note.data},
+                                    updated_at=CURRENT_TIMESTAMP
+                                    WHERE id=${note.id}'`)
+            const transaction = DB.transaction(() => {
+                    const info = query.run()
+                    logger.info(info.changes)
+            })
+            transaction()
+
+            return {
+                id: note.id,
+                user_id: note.user_id,
+                data: note.data
+            }
+        } catch (err) {
+            return null
+        }
     }
 
     private async _InsertOne(note: Note) {
-        const query = DB.prepare(`INSERT INTO note(id, user_id, data)
-                                VALUES('${note.id}', '${note.user_id}', '${note.data}')`);
-        const transaction = DB.transaction(() => {
-            const info = query.run()
-            logger.info(info.changes)
-        })
-        transaction()
+        try {
+            const query = DB.prepare(`INSERT INTO note(id, user_id, data)
+                                    VALUES('${note.id}', '${note.user_id}', '${note.data}')`);
+            const transaction = DB.transaction(() => {
+                const info = query.run()
+                logger.info(info.changes)
+            })
+            transaction()
+
+            return {
+                id: note.id,
+                user_id: note.user_id,
+                data: note.data
+            }
+        } catch (err) {
+            return null
+        }
     }
 
-    public async UpsertNote(note: Note){
+    public async UpsertNote(note: Note) {
         try {
             const existingNote: Note | null = await this.FindOneNote(note.id!);
 
             if (existingNote !== null) {
-                await this._UpdateNote(existingNote);
+                const result = await this._UpdateNote(existingNote);
+                if(result === null){
+                    return null
+                }
+                return result
             }
             else {
                 const id: string = randomUUID();
-                await this._InsertOne({
+                const result = await this._InsertOne({
                     id: id,
                     user_id: note.user_id,
                     data: note.data
                 })
+                if(result === null){
+                    return null
+                }
+                return result
             }
         } catch(err) {
             return null

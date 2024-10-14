@@ -13,7 +13,6 @@ export class UserService {
 
     public async signUp(username: string, password: string): Promise<User | null> {
         const checkUser: User | null = await this.userRepository.FindOneUser(username);
-
         if(checkUser !== null) {
             return null
         }
@@ -31,19 +30,25 @@ export class UserService {
 
             return newUser;
         } catch(err) {
+            logger.error(err)
             return null
         }
     }
 
     public async signIn(username: string, password: string): Promise<User | null> {
-        const checkUser: User | null = await this.userRepository.FindOneUser(username);
-        if(checkUser !== null){
-            const isPasswordCorrect = await compare(password, checkUser.password || '')
-            if(!isPasswordCorrect) {
-                return null
-            }
-        }
 
-        return checkUser;
+        try {
+            const checkUser: User | null = await this.userRepository.FindOneUser(username);
+            if(checkUser !== null){
+                const isPasswordCorrect = await compare(password, checkUser.password!)
+                if(!isPasswordCorrect) {
+                    return null
+                }
+            }
+            return checkUser;
+        } catch (err) {
+            logger.error(err)
+            return null
+        }
     }
 }
