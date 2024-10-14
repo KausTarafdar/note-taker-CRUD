@@ -39,9 +39,9 @@ export class NoteRepository {
     private async _UpdateNote(note: Note) {
         try {
             const query = DB.prepare(`UPDATE note
-                                    SET data='${note.data},
+                                    SET data='${note.data}',
                                     updated_at=CURRENT_TIMESTAMP
-                                    WHERE id=${note.id}'`)
+                                    WHERE id='${note.id}'`)
             const transaction = DB.transaction(() => {
                     const info = query.run()
                     logger.info(info.changes)
@@ -81,11 +81,15 @@ export class NoteRepository {
     public async UpsertNote(note: Note) {
         try {
             const existingNote: Note | null = await this.FindOneNote(note.id!);
-
             if (existingNote !== null) {
-                const result = await this._UpdateNote(existingNote);
+                const result = await this._UpdateNote({
+                    id: existingNote.id,
+                    user_id: note.user_id,
+                    data: note.data
+                });
+                console.log(result)
                 if(result === null){
-                    return null
+                   return null
                 }
                 return result
             }
@@ -106,14 +110,21 @@ export class NoteRepository {
         }
     }
 
-    public async DeleteOne(id: string){
+    public async DeleteOne(id: string): Promise<string | null>{
         try {
-            const query = DB.prepare(`DELETE FROM note WHERE id='${id}'`);
-            const transaction = DB.transaction(() => {
-                const info = query.run()
-                logger.info(info.changes)
-            })
-            transaction()
+            const existingNote: Note | null = await this.FindOneNote(id);
+
+            if (existingNote !== null) {
+                const query = DB.prepare(`DELETE FROM note WHERE id='${id}'`);
+                const transaction = DB.transaction(() => {
+                    const info = query.run()
+                    logger.info(info.changes)
+                })
+                transaction()
+                return existingNote.id as string
+            } else {
+                return 'notFound'
+            }
         } catch (err) {
             return null
         }

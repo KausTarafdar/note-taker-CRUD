@@ -25,11 +25,8 @@ export default class NoteService {
         return newNote
     }
 
-    public async deleteNote(note_id: string): Promise<void | null> {
+    public async deleteNote(note_id: string): Promise<string | null> {
         const deleteNote = await this.noteRepository.DeleteOne(note_id);
-
-        if (deleteNote == null) {
-            return null
-        }
+        return deleteNote
     }
 }

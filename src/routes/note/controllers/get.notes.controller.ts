@@ -18,6 +18,14 @@ export default async function handleGetNotes(req: Request, res: Response) {
 
     try {
         const notesArray: NotesArray | null = await noteService.getAllNotes(req.user_id as string, limit, page)
+        if (notesArray === null) {
+            res.status(200).json({
+                status: 'success',
+                message: 'successfully fetched all user notes',
+                data: {}
+            });
+            return
+        }
         res.status(200).json({
             status: 'success',
             message: 'successfully fetched all user notes',

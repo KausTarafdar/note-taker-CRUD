@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
+
 import { NoteRepository } from "../../../models/note";
 import NoteService from "../../../services/notesServices";
+
 import { isBodyEmpty } from "../../../lib/emptyMessage";
 
 const noteRepository: NoteRepository = new NoteRepository();
@@ -8,12 +10,13 @@ const noteService: NoteService = new NoteService(noteRepository);
 
 export default async function handleNewNote(req: Request, res: Response) {
     const { note } = req.body;
-    if(isBodyEmpty(note)) {
+    if(!note || isBodyEmpty(note)) {
         res.status(400).json({
             status: 'error',
             errorType: 'Bad Request',
             message: 'Request body cannot be empty'
         })
+        return
     }
     try {
         const insertNote = await noteService.insertOrUpdateNote({

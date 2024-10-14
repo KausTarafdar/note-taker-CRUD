@@ -9,7 +9,7 @@ const notesRouter = Router();
 
 //Doesn't require body
 notesRouter.get('/notes', protectRoute, handleGetNotes);
-notesRouter.delete('/note/:id', handleDeleteNote);
+notesRouter.delete('/note/:note_id', protectRoute, handleDeleteNote);
 
 //Require a body
 notesRouter.post('/new/note', protectRoute, handleNewNote);

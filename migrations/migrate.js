@@ -37,7 +37,7 @@ async function create_notes_table(db) {
     let note_table_schema = `
         CREATE TABLE IF NOT EXISTS note(
         id CHAR(15) NOT NULL UNIQUE PRIMARY KEY,
-        user_id VARCHAR NOT NULL UNIQUE,
+        user_id VARCHAR NOT NULL,
         data VARCHAR NOT NULL UNIQUE,
         created_at DEFAULT CURRENT_TIMESTAMP,
         updated_at DEFAULT CURRENT_TIMESTAMP,
