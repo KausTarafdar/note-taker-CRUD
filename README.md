@@ -202,7 +202,7 @@ JWT_SECRET=/ generate any hash string /
 ```sh
 bash reset_db.sh
 ```
-
+5. Start Server:
 - To start in development mode run :-
 
 ```sh
