@@ -38,7 +38,7 @@ async function create_notes_table(db) {
         CREATE TABLE IF NOT EXISTS note(
         id CHAR(15) NOT NULL UNIQUE PRIMARY KEY,
         user_id VARCHAR NOT NULL,
-        data VARCHAR NOT NULL UNIQUE,
+        data VARCHAR NOT NULL,
         created_at DEFAULT CURRENT_TIMESTAMP,
         updated_at DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY(user_id) REFERENCES user(id)

@@ -34,6 +34,7 @@ export default async function handleNewNote(req: Request, res: Response) {
         })
 
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             status: 'error',
             errorType: 'ApiError',

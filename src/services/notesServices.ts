@@ -21,7 +21,6 @@ export default class NoteService {
         if(newNote == null) {
             return null
         }
-
         return newNote
     }
 
