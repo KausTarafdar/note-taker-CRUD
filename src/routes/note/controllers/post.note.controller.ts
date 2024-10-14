@@ -4,6 +4,7 @@ import { NoteRepository } from "../../../models/note";
 import NoteService from "../../../services/notesServices";
 
 import { isBodyEmpty } from "../../../lib/emptyMessage";
+import logger from "../../../lib/logger";
 
 const noteRepository: NoteRepository = new NoteRepository();
 const noteService: NoteService = new NoteService(noteRepository);
@@ -11,6 +12,7 @@ const noteService: NoteService = new NoteService(noteRepository);
 export default async function handleNewNote(req: Request, res: Response) {
     const { note } = req.body;
     if(!note || isBodyEmpty(note)) {
+        logger.error('note body is empty')
         res.status(400).json({
             status: 'error',
             errorType: 'Bad Request',
@@ -26,7 +28,7 @@ export default async function handleNewNote(req: Request, res: Response) {
         if (insertNote === null) {
             throw new Error();
         }
-
+        logger.info(`Created new note for user id: ${req.user_id}`)
         res.status(200).json({
             status: 'success',
             message: 'Note successfully added',
@@ -34,7 +36,7 @@ export default async function handleNewNote(req: Request, res: Response) {
         })
 
     } catch (err) {
-        console.log(err)
+        logger.error(err)
         res.status(500).json({
             status: 'error',
             errorType: 'ApiError',

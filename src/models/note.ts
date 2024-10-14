@@ -20,6 +20,7 @@ export class NoteRepository {
             }
             return null
         } catch (err) {
+            logger.error(err)
             return null
         }
     }
@@ -32,6 +33,7 @@ export class NoteRepository {
             }
             return null
         } catch (err) {
+            logger.error(err)
             return null
         }
     }
@@ -54,6 +56,7 @@ export class NoteRepository {
                 data: note.data
             }
         } catch (err) {
+            logger.error(err)
             return null
         }
     }
@@ -74,42 +77,12 @@ export class NoteRepository {
                 data: note.data
             }
         } catch (err) {
-            console.log(err)
+            logger.error(err)
             return null
         }
     }
 
     public async UpsertNote(note: Note) {
-        // try {
-        //     const existingNote: Note | null = await this.FindOneNote(note.id!);
-        //     if (existingNote !== null) {
-        //         const result = await this._UpdateNote({
-        //             id: existingNote.id,
-        //             user_id: note.user_id,
-        //             data: note.data
-        //         });
-        //         console.log(result)
-        //         if(result === null){
-        //            return null
-        //         }
-        //         return result
-        //     }
-        //     else {
-        //         const id: string = randomUUID();
-        //         const result = await this._InsertOne({
-        //             id: id,
-        //             user_id: note.user_id,
-        //             data: note.data
-        //         })
-        //         if(result === null){
-        //             return null
-        //         }
-        //         return result
-        //     }
-        // } catch(err) {
-        //     return null
-        // }
-
         try {
             if (!note.id) {
                 const id: string = randomUUID()
@@ -136,7 +109,7 @@ export class NoteRepository {
                 return result;
             }
         } catch (err) {
-            console.log(err.message)
+            logger.error(err)
             return null
         }
     }
@@ -157,6 +130,7 @@ export class NoteRepository {
                 return 'notFound'
             }
         } catch (err) {
+            logger.error(err)
             return null
         }
     }

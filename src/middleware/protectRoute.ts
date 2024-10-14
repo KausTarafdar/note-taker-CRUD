@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 import { UserRepository } from "../models/users";
+import logger from "../lib/logger";
 
 async function protectRoute (req: Request, res: Response, next: NextFunction): Promise<void>{
   try {
     if(!req.headers.authorization){
+      logger.error("Authentication token unavailable")
       res.status(401).json({
         status: "error",
         errorType: 'AuthError',
@@ -17,6 +19,7 @@ async function protectRoute (req: Request, res: Response, next: NextFunction): P
     const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
     const user = await new UserRepository().FindOneById(decoded as string);
     if (!user) {
+      logger.error("Authentication token invalid")
       res.status(401).json({
         status: "error",
         errorType: 'AuthError',
@@ -30,6 +33,7 @@ async function protectRoute (req: Request, res: Response, next: NextFunction): P
     next();
 
   } catch (err) {
+    logger.error("Authorization token invalid")
     res.status(401).json({
       status: "error",
       errorType: 'AuthError',

@@ -17,8 +17,9 @@ export default async function handleGetNotes(req: Request, res: Response) {
     const skip:number = getPagination(limit, page)
 
     try {
-        const notesArray: NotesArray | null = await noteService.getAllNotes(req.user_id as string, limit, page)
+        const notesArray: NotesArray | null = await noteService.getAllNotes(req.user_id as string, limit, skip)
         if (notesArray === null) {
+            logger.info(`GET Notes for user ${req.user_id}`)
             res.status(200).json({
                 status: 'success',
                 message: 'successfully fetched all user notes',
@@ -26,12 +27,14 @@ export default async function handleGetNotes(req: Request, res: Response) {
             });
             return
         }
+        logger.info(`GET Notes for user ${req.user_id}`)
         res.status(200).json({
             status: 'success',
             message: 'successfully fetched all user notes',
             data: notesArray
         });
     } catch (err) {
+        logger.error(err)
         res.status(500).json({
             status: 'error',
             errorType: 'ApiError',

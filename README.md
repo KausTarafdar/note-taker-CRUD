@@ -1,7 +1,5 @@
 # CRUD REST API for Note-Taking
 
-#### ***Deployed api*** :  https://poc-ket.onrender.com
-
 This project was build as the internship assignment for RaftLabs
 
 **Technologies Used**
@@ -82,7 +80,7 @@ NodeJS Application written in TypeScript
 ```json
 Header:
 {
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.MmVjN2RjYjctZTFjZi00M2Q4LTljODAtYjg4NDhiMWEwMTcz.SzgS0iyCB8ewWEwvGh7gR6l8iZWrjQy6gmrE5GjhF0Y'
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.MmVjN2RjYjctZTFjZi00M2Q4LTljODAtYjg4NDhiMWEwMTcz.SzgS0iyCB8ewWEwvGh7gR6l8iZWrjQy6gmrE5GjhF0Y"
 }
 
 Request :
@@ -139,12 +137,12 @@ Response:
 ```json
 Header:
 {
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.MmVjN2RjYjctZTFjZi00M2Q4LTljODAtYjg4NDhiMWEwMTcz.SzgS0iyCB8ewWEwvGh7gR6l8iZWrjQy6gmrE5GjhF0Y'
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.MmVjN2RjYjctZTFjZi00M2Q4LTljODAtYjg4NDhiMWEwMTcz.SzgS0iyCB8ewWEwvGh7gR6l8iZWrjQy6gmrE5GjhF0Y"
 }
 
 Request :
 {
-    "id": "d15cdc2d-b6d3-4574-abfe-9f4f2af21d22"
+    "id": "d15cdc2d-b6d3-4574-abfe-9f4f2af21d22",
     "note": "updated my CRUD Api"
 }
 

@@ -20,6 +20,7 @@ export class UserRepository {
 
             return null
         } catch(err) {
+            logger.error(err)
             return null
         }
     }
@@ -34,6 +35,7 @@ export class UserRepository {
             })
             transaction()
         } catch (err) {
+            logger.error(err)
             return null
         }
     }
@@ -47,6 +49,7 @@ export class UserRepository {
             }
             return false
         } catch(err) {
+            logger.error(err)
             return false
         }
     }
